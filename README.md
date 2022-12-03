@@ -14,6 +14,9 @@ The name is inspired from the purpose (Arr -> arr, Man -> Manipulation)
 #### Operations to be implemented
 - Subarray using (from, to) indices format.
 
+## How to run it
+You need [Emu8086 Assembler](https://emu8086-microprocessor-emulator.softonic-ar.com/download) because Emu8086.inc library is included.
+
 ## Team members
 - Ahmed ElShamy
 - Muhammed Hamada
