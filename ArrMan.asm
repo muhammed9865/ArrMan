@@ -25,6 +25,7 @@ sumResult dw 0000h, '$'
 arr dw 50 dup(?)
 
 ; Messages to be printed
+enterArrayMsg db  'Enter elements, to finish an element, press enter. To exit entering elements, press Enter twice$'
 maxmessage db 0Dh ,'the maximum number is:-  $'
 minmessage db 0Dh ,'the minimum number is:-  $'
 summessage db 0D ,'the array summation is:- $'
@@ -48,6 +49,12 @@ DEFINE_PRINT_NUM_UNS
 main proc far
     mov ax, @data
     mov ds, ax
+    
+    lea dx, enterArrayMsg
+    mov ah, 09h
+    int 21h
+    call newline
+    call newline
     
     call getArray
     call arrAvg
@@ -206,10 +213,13 @@ getNum proc near
 
 ; Printing a newline on display
 newline proc near
-    
+    push dx
+    push ax
     LEA DX,n_line
     MOV AH,9
-    INT 21H     
+    INT 21H
+    pop ax
+    pop dx     
     ret
     newline endp
     
