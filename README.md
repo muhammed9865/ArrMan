@@ -14,6 +14,10 @@ The name is inspired from the purpose (Arr -> arr, Man -> Manipulation)
 #### Operations to be implemented
 - Subarray using (from, to) indices format.
 
+## Notes on ArrMan
+- ArrMan array is word defined elements, which maximum value of entered element is 65536 (best case)
+- Array elements all should add up to 65536, anything higher will cause into implicit overflow, since Operations are done using AX.  
+
 ## How to run it
 You need [Emu8086 Assembler](https://emu8086-microprocessor-emulator.softonic-ar.com/download) because Emu8086.inc library is included.
 
