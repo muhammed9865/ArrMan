@@ -20,10 +20,11 @@ You need [Emu8086 Assembler](https://emu8086-microprocessor-emulator.softonic-ar
 ## Gallery
 <div><b>Taking input array elements<b></div>
   
-<img src="https://user-images.githubusercontent.com/84887514/205463018-e1f09039-c293-4c1f-b0d7-9f95440a60a5.png" alt="drawing" width="600"/> 
+<img src="https://user-images.githubusercontent.com/84887514/205463440-b1936a32-e120-42a4-9770-54b9487571ee.png" alt="drawing" width="600"/> 
 <div><b>Performing operations on array<b></div>
   
-<img src="https://user-images.githubusercontent.com/84887514/205463035-6d1950d5-fec9-401b-8195-26499d5779f5.png" alt="drawing" width="600"/>
+<img src="https://user-images.githubusercontent.com/84887514/205463462-e83f6609-6bf0-498d-9892-c1593910b31b.png" alt="drawing" width="600"/>
+
 
 
 
