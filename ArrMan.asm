@@ -8,6 +8,7 @@ sumchar db 's'
 avgchar db 'a'
 maxminchar db 'm'
 modchar db 'f'
+exitchar db 0Dh
 
 ; Array counter to keep track of array length
 length dw 0  
@@ -26,9 +27,11 @@ sumResult dw 0000h, '$'
 arr dw 50 dup(?)
 
 ; Messages to be printed
-enterArrayMsg db  'Enter elements, to finish an element, press enter. To exit entering elements, press Enter twice$' 
-ChooseMsg db 'press the character corresponding to the desired operation $'
-optionsMsg db 'a-Average             s-Sum', 0AH, 0DH, 'm-Maximum / Minimum   f-most occurring number$'
+enterArrayMsg db  'Enter elements, to finish an element, press enter', 0Ah, 0Dh, 'To exit entering elements, press Enter twice$' 
+ChooseMsg db 'Press the character corresponding to the desired operation $'
+optionsMsg db 'a- Average             s- Sum', 0AH, 0DH, 'm- Maximum / Minimum   f- Most occurring number', 0AH,0DH,'Press enter to exit...$.'
+exitMsg db 'See you later ', 0xF0, '$'
+
 maxmessage db 0Dh ,'the maximum number is:-  $'
 minmessage db 0Dh ,'the minimum number is:-  $'
 summessage db 0D ,'the array summation is:- $'
@@ -63,31 +66,46 @@ main proc far
     mov dx, offset ChooseMsg  
     mov ah, 09h
     int 21h
+    ;call newline
+    
+    optionsSelection:
     call newline
     mov dx, offset optionsMsg
+    mov ah, 09h
     int 21h   
     call newline
     mov ah, 01h
     int 21h
             
-    cmp al, 'a'
+    cmp al, avgchar
     jz gettingAvg
-    cmp al, 's'
+    
+    cmp al, sumchar
     jz gettingSum
-    cmp al, 'm' 
+    
+    cmp al, maxminchar 
     jz gettingminmax
+    
+    cmp al, exitchar
+    jz finishExec
     
     gettingAvg:
         call arrAvg
-        jmp finishExec
+        jmp optionsSelection
     gettingSum:
         call arrSum
-        jmp finishExec
+        call printSum
+        jmp optionsSelection
     gettingminmax:
         call gettingMaxMin
-        jmp finishExec
+        jmp optionsSelection
+        
         
     finishExec:
+        call newline
+        lea dx, exitMsg
+        mov ah, 09h
+        int 21h
         .exit
     
     
@@ -145,14 +163,6 @@ arrSum proc near
     jmp repeat
             
     exit:
-    ;Print result
-    mov dx, offset summessage
-    mov ah, 09h
-    int 21h
-    
-    mov ax, sumResult
-    call PRINT_NUM_UNS
-    call newline
     
     ;Restoring registers values
     pop cx
@@ -162,6 +172,23 @@ arrSum proc near
     
     ret
     arrSum endp
+
+
+printSum proc near
+    ;Print result
+    push ax
+    push dx
+    mov dx, offset summessage
+    mov ah, 09h
+    int 21h
+    
+    mov ax, sumResult
+    call PRINT_NUM_UNS
+    call newline
+    pop dx
+    pop ax
+    ret
+    
 
 arrAvg proc near
     call arrSum 
