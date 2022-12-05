@@ -6,7 +6,8 @@ include 'emu8086.inc'
 ; Operations symbols
 sumchar db 's'
 avgchar db 'a'
-
+maxminchar db 'm'
+modchar db 'f'
 
 ; Array counter to keep track of array length
 length dw 0  
@@ -25,7 +26,9 @@ sumResult dw 0000h, '$'
 arr dw 50 dup(?)
 
 ; Messages to be printed
-enterArrayMsg db  'Enter elements, to finish an element, press enter. To exit entering elements, press Enter twice$'
+enterArrayMsg db  'Enter elements, to finish an element, press enter. To exit entering elements, press Enter twice$' 
+ChooseMsg db 'press the character corresponding to the desired operation $'
+optionsMsg db 'a-Average             s-Sum', 0AH, 0DH, 'm-Maximum / Minimum   f-most occurring number$'
 maxmessage db 0Dh ,'the maximum number is:-  $'
 minmessage db 0Dh ,'the minimum number is:-  $'
 summessage db 0D ,'the array summation is:- $'
@@ -57,9 +60,36 @@ main proc far
     call newline
     
     call getArray
-    call arrAvg
+    mov dx, offset ChooseMsg  
+    mov ah, 09h
+    int 21h
     call newline
-    call gettingMaxMin
+    mov dx, offset optionsMsg
+    int 21h   
+    call newline
+    mov ah, 01h
+    int 21h
+            
+    cmp al, 'a'
+    jz gettingAvg
+    cmp al, 's'
+    jz gettingSum
+    cmp al, 'm' 
+    jz gettingminmax
+    
+    gettingAvg:
+        call arrAvg
+        jmp finishExec
+    gettingSum:
+        call arrSum
+        jmp finishExec
+    gettingminmax:
+        call gettingMaxMin
+        jmp finishExec
+        
+    finishExec:
+        .exit
+    
     
    
     .exit
