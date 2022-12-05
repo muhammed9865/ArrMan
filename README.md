@@ -1,7 +1,7 @@
 # ArrMan - Assembly course project - 3rd year of CS
 
 This project aims to manipulate positive integer array using Assembly language.<br>
-The name is inspired from the purpose (Arr -> arr, Man -> Manipulation)  
+The name is inspired from the purpose (Arr -> array, Man -> Manipulation)  
 (<•>_<•>)
 
 #### Operations on array
