@@ -151,6 +151,7 @@ arrSum proc near
     xor ax, ax
     xor si, si
     xor cx, cx
+    mov sumResult, 0000h
     
     repeat:
     cmp cx, length
@@ -395,10 +396,17 @@ gettingMaxMin proc near
 gettingMaxMin endp
 
 mode proc near
+    
+    push cx
+    push si
+    push bp
+   ; push sp
+    push ax
+    
     mov cx, length
     mov si, 0
     mov bp, 0
-    mov sp, 0
+    mov dx, 0
     mov ax, 0
 
     LoopOne:
@@ -431,22 +439,30 @@ mode proc near
     
     CodeThree:
         mov ax, counter
-        mov sp, [arr + si]
+        mov dx, [arr + si]
         add si, 02h
         loop LoopOne
 
     jmp printMode
 
     printMode:
+        push dx ; saving mode
         mov dx, offset modMessage
         mov ah, 09h
         int 21h
         
-        mov ax, sp
+        pop dx ; restoring mode
+        mov ax, dx
         call PRINT_NUM_UNS
         call newline
-
-        jmp optionsSelection
+        
+        pop ax
+       ; pop sp
+        pop bp
+        pop si
+        pop cx
+        
+        ret
 mode endp
 
 calculateVal proc near
