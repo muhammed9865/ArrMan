@@ -13,6 +13,9 @@ exitchar db 0Dh
 ; Array counter to keep track of array length
 length dw 0  
 
+; Mode data section
+counter dw 0
+
 ; To store the maximum value
 max dw 0000h, '$' 
 maxString db '00000$' 
@@ -21,7 +24,6 @@ min dw 0000h, '$'
 minString db '00000$'
 ; To store sum result
 sumResult dw 0000h, '$'
-
 
 ; The array 
 arr dw 50 dup(?)
@@ -36,8 +38,7 @@ maxmessage db 0Dh ,'the maximum number is:-  $'
 minmessage db 0Dh ,'the minimum number is:-  $'
 summessage db 0D ,'the array summation is:- $'
 avgmessage db 0D ,'the array average is:- $'
-
- 
+modMessage db 0D ,'the array most ocurring number is:- $'
 
 ; Others  
 
@@ -49,8 +50,6 @@ num10 dw 000Ah
 
 DEFINE_PRINT_NUM                
 DEFINE_PRINT_NUM_UNS    
-
-
 
 main proc far
     mov ax, @data
@@ -85,7 +84,10 @@ main proc far
     
     cmp al, maxminchar 
     jz gettingminmax
-    
+
+    cmp al, modchar
+    jz gettingMode
+
     cmp al, exitchar
     jz finishExec
     
@@ -99,7 +101,9 @@ main proc far
     gettingminmax:
         call gettingMaxMin
         jmp optionsSelection
-        
+    gettingMode:
+        call mode
+        jmp optionsSelection
         
     finishExec:
         call newline
@@ -109,7 +113,6 @@ main proc far
         .exit
     
     
-   
     .exit
     main endp
     
@@ -312,7 +315,7 @@ gettingMaxMin proc near
         loop Second_Loop        
 
         mov byte [si], '$'
-      
+    
     mov dx, offset maxMessage
     mov ah, 09h 
     int 21h
@@ -385,12 +388,66 @@ gettingMaxMin proc near
                 int 21h                    ;call the interrupt for printing 
                 pop si                     ;return the same si that was saved after the call of this precedure
                 ret                        ;return to MAIN
-                 
         
         
             
 
 gettingMaxMin endp
+
+mode proc near
+    mov cx, length
+    mov si, 0
+    mov bp, 0
+    mov sp, 0
+    mov ax, 0
+
+    LoopOne:
+        mov counter, 0
+        mov bx, [arr + si]
+        mov di, 0
+        mov bp, 0
+        LoopTwo:
+            cmp bp, length
+            jge CodeTwo
+            cmp bx, [arr + di]
+            jne CodeOne
+            inc counter
+            add di, 02h
+            add bp, 01h
+            jmp LoopTwo
+
+    CodeOne:
+        add di, 02h
+        add bp, 01h
+        jmp LoopTwo
+
+    CodeTwo:
+        cmp ax, counter
+        jle CodeThree
+        add si, 02h
+        loop LoopOne
+
+    jmp printMode
+    
+    CodeThree:
+        mov ax, counter
+        mov sp, [arr + si]
+        add si, 02h
+        loop LoopOne
+
+    jmp printMode
+
+    printMode:
+        mov dx, offset modMessage
+        mov ah, 09h
+        int 21h
+        
+        mov ax, sp
+        call PRINT_NUM_UNS
+        call newline
+
+        jmp optionsSelection
+mode endp
 
 calculateVal proc near
     settingUp: ;setting up the register with the required valuse before looping
@@ -437,4 +494,3 @@ calculateVal proc near
 calculateVal endp
 
 end main
-
