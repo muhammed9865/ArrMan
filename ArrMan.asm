@@ -1,4 +1,4 @@
-include 'emu8086.inc'
+;include 'emu8086.inc'
 .MODEL SMALL
 .stack 100h
 .data
@@ -45,7 +45,6 @@ avgmessage db 0D ,'the array average is:- $'
 modMessage db 0D ,'the array most ocurring number is:- $'
 
 ; Others  
-
 n_line db 0AH,0DH,"$" ; For new line
 enterPressCount db 00h
 num10 dw 000Ah
@@ -53,8 +52,7 @@ seperator db ' - $'
 
 .code
 
-DEFINE_PRINT_NUM                
-DEFINE_PRINT_NUM_UNS    
+   
 
 main proc far
     mov ax, @data
@@ -103,7 +101,7 @@ main proc far
     jz finishExec
     
     gettingAvg:
-        call arrSort
+        call arrAvg
         jmp optionsSelection
         
     gettingSum:
@@ -115,7 +113,8 @@ main proc far
         call gettingMaxMin
         jmp optionsSelection
         
-    gettingMode:
+    gettingMode: 
+        call newline
         call mode
         jmp optionsSelection
     
@@ -305,8 +304,8 @@ printSum proc near
     mov ah, 09h
     int 21h
     
-    mov ax, sumResult
-    call PRINT_NUM_UNS
+    mov bx, sumResult
+    call printNum
     call newline
     pop dx
     pop ax
@@ -332,7 +331,8 @@ arrAvg proc near
     
     pop ax ;restoring ax value for printing
     
-    CALL PRINT_NUM_UNS
+    mov bx, ax
+    CALL printNum
     
     
     ret
@@ -535,8 +535,8 @@ mode proc near
         int 21h
         
         pop dx ; restoring mode
-        mov ax, dx
-        call PRINT_NUM_UNS
+        mov bx, dx
+        call printNum
         call newline
         
         pop ax
