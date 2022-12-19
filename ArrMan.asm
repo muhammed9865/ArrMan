@@ -17,11 +17,12 @@ length dw 0
 counter dw 0
 
 ; To store the maximum value
-max dw 0000h, '$' 
-maxString db '00000$' 
+max dw 0000h
 ; To store the maximum value
-min dw 0000h, '$'       
-minString db '00000$'
+min dw 0000h
+
+; To store the ASCII for printing 16-bit number. 
+numString db '000000$'
 ; To store sum result
 sumResult dw 0000h, '$'
 
@@ -34,7 +35,7 @@ ChooseMsg db 'Press the character corresponding to the desired operation $'
 optionsMsg db 'a- Average             s- Sum', 0AH, 0DH, 'm- Maximum / Minimum   f- Most occurring number', 0AH,0DH,'Press enter to exit...$.'
 exitMsg db 'See you later ', 0xF0, '$'
 
-maxmessage db 0Dh ,'the maximum number is:-  $'
+maxmessage db 0Dh ,'the maximum number is:-  $' 
 minmessage db 0Dh ,'the minimum number is:-  $'
 summessage db 0D ,'the array summation is:- $'
 avgmessage db 0D ,'the array average is:- $'
@@ -351,34 +352,14 @@ gettingMaxMin proc near
     mov ax, word ptr [arr+00h]
     jmp gettingMax
     printMax:
-        mov ax, word ptr [max] 
-        mov bx, 000Ah              
-        mov cx, 0000h              
-
-    First_Loop:
-        mov dx, 0000h             
-        div bx                 
-        push dx                
-        inc cx                  
-        cmp ax, 0000h           
-        jnz First_Loop          
-
-        mov si, offset maxString         
-    Second_Loop:
-        pop ax                 
-        add ax, 30h      
-        mov byte ptr [si], al           
-        inc si                  
-        loop Second_Loop        
-
-        mov byte [si], '$'
-    
-    mov dx, offset maxMessage
-    mov ah, 09h 
-    int 21h
-    mov dx, offset maxString
-    int 21h   
-    jmp gettingMin
+        mov ax, word ptr [max]      ;putting the maximum number into ax
+        mov bx, ax                  ;moving the nubmer into bx for printing
+        call newLine                ;calling the newline subroutine
+        mov dx, offset maxMessage   ;putting the address of the message inside dx for printing
+        mov ah, 09h                 ;putting 09h in ah for printing reasons
+        int 21h                     ;calling the interrupt
+        call printNum               ;calling the printNum subroutine with the number inside bx
+        jmp gettingMin              ;jumping to getting the min. 
         
         
     gettingMax:
@@ -415,34 +396,16 @@ gettingMaxMin proc near
                 jmp continueMin           ;continue the loop to consume the whole array
             
             finishMin:
-                mov word ptr [min], ax ;saving the minimum number into memory
-                mov bx, 000Ah          ;putting 10 in the bx to act as a divisor    
-                mov cx, 0000h          ;putting cx to 0 to count the number of digits inside the number fot looping later    
-
-                First_Loop_Min:
-                    mov dx, 0000h      ;reseting the dx to zero to hold the reminder of the new division operation       
-                    div bx             ;dividing the number by 10    
-                    push dx            ;push the reminder of the division which is the Least Signifcant Digit in the number at the current iteration    
-                    inc cx             ;increment the cx register to keep count of how many digits are in the number    
-                    cmp ax, 0000h      ;if the number which is in ax has the value of zero that means that the number is done and all the digits have been divised already     
-                    jnz First_Loop_Min ;if the ax isn't zero and thus the number still holds some value above zero divide by 10 again         
-
-                mov si, offset minString   ;move the address of the char array with the purpose of saving each ASCII in a byte         
-                Second_Loop_Min:           
-                    pop ax                 ;pop the Most Segnificant Digit of the remaining ones and put it in ax
-                    add ax, 30h            ;add 30H to that value to get the ASCII code
-                    mov byte ptr [si], al  ;save that ASCII code in it's corresponding byte in the char array         
-                    inc si                 ;increment the si to move to the next index in the array 
-                    loop Second_Loop_Min   ;loop over until cx which holds the number of digits of the number hits zero     
-
-                mov byte [si], '$'         ;store $ right after the last digit for printing reasons
-                
-                call newline
-                mov dx, offset minMessage  ;put the address of the message inside dx for printing
+                mov word ptr [min], ax     ;saving the minimum number into memory
+                mov bx, ax                 ;moving the number into bx to call the printing subroutine
+                call newline               ;calling the newspace subroutine for spacing and organizing
+                mov dx, offset minMessage  ;putting the address of the message inside the dx for printing reasons
                 mov ah, 09h                ;put 09h in the ah for printing
                 int 21h                    ;call the interrupt fot printing
-                mov dx, offset minString   ;move the address of the minimum number's string inside dx for printing
-                int 21h                    ;call the interrupt for printing 
+                call printNum              ;calling the subroutine to print the number.
+                
+                
+  
                 pop si                     ;return the same si that was saved after the call of this precedure
                 ret                        ;return to MAIN
         
@@ -564,5 +527,41 @@ calculateVal proc near
         ret
 
 calculateVal endp
+
+printNum proc near
+         push dx
+         push cx
+         push ax
+         mov ax, bx
+         mov bx, 000Ah          ;putting 10 in the bx to act as a divisor    
+         mov cx, 0000h          ;putting cx to 0 to count the number of digits inside the number fot looping later    
+
+         First_Loop_Min:
+               mov dx, 0000h      ;reseting the dx to zero to hold the reminder of the new division operation       
+               div bx             ;dividing the number by 10    
+               push dx            ;push the reminder of the division which is the Least Signifcant Digit in the number at the current iteration    
+               inc cx             ;increment the cx register to keep count of how many digits are in the number    
+               cmp ax, 0000h      ;if the number which is in ax has the value of zero that means that the number is done and all the digits have been divised already     
+               jnz First_Loop_Min ;if the ax isn't zero and thus the number still holds some value above zero divide by 10 again         
+
+         mov si, offset numString ;move the address of the char array with the purpose of saving each ASCII in a byte         
+         Second_Loop_Min:           
+               pop ax                 ;pop the Most Segnificant Digit of the remaining ones and put it in ax
+               add ax, 30h            ;add 30H to that value to get the ASCII code
+               mov byte ptr [si], al  ;save that ASCII code in it's corresponding byte in the char array         
+               inc si                 ;increment the si to move to the next index in the array 
+               loop Second_Loop_Min   ;loop over until cx which holds the number of digits of the number hits zero     
+
+         mov byte [si], '$'         ;store $ right after the last digit for printing reasons
+         lea dx, numString          ;put the address of the message inside dx for printing
+         mov ah, 09h                ;putting 09h in ah to call the interrupt for the print
+         int 21h                    ;calling the interrupt. 
+         
+         pop ax
+         pop cx
+         pop dx
+         ret
+printNum endp
+
 
 end main
