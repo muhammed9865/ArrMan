@@ -19,7 +19,7 @@ The name is inspired from the purpose (Arr -> array, Man -> Manipulation)
 - Array elements all should add up to 65536, anything higher will cause into implicit overflow, since Operations are done using AX.  
 
 ## How to run it
-Clone the project, then run the ArrMan.asm using any 0086 assembler, Emu8086 is preferred since ArrMan is built using it.
+Clone the project, then run the ArrMan.asm using any 8086 assembler, [Emu8086 Assembler](https://emu8086-microprocessor-emulator.softonic-ar.com/download) is preferred since ArrMan is built using it.
 
 ## Gallery
 <div><b>Taking input array elements<b></div>
@@ -33,7 +33,7 @@ Clone the project, then run the ArrMan.asm using any 0086 assembler, Emu8086 is 
 
 
 ## Team members
-- Ahmed ElShamy
-- Muhammed Hamada
-- Muhammed Salman
+- [Ahmed ElShamy](https://github.com/shamyAhmed)
+- [Muhammed Hamada](https://github.com/MohammedCS)
+- [Muhammed Salman](https://github.com/muhammed9865)
 
