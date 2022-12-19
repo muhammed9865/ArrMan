@@ -10,24 +10,24 @@ The name is inspired from the purpose (Arr -> array, Man -> Manipulation)
 - Get the array Average
 - Get the Minium/Maximum values of the array
 - Get the Mode of the array (Most occurred value)
+- Sort the array (Bubble sort)
+- Print the array
 
-#### Operations to be implemented
-- Subarray using (from, to) indices format.
 
 ## Notes on ArrMan
 - ArrMan array is word defined elements, which maximum value of entered element is 65536 (best case)
 - Array elements all should add up to 65536, anything higher will cause into implicit overflow, since Operations are done using AX.  
 
 ## How to run it
-You need [Emu8086 Assembler](https://emu8086-microprocessor-emulator.softonic-ar.com/download) because Emu8086.inc library is included.
+Clone the project, then run the ArrMan.asm using any 0086 assembler, Emu8086 is preferred since ArrMan is built using it.
 
 ## Gallery
 <div><b>Taking input array elements<b></div>
   
-<img src="https://user-images.githubusercontent.com/84887514/205463440-b1936a32-e120-42a4-9770-54b9487571ee.png" alt="drawing" width="600"/> 
+
+<img src="https://user-images.githubusercontent.com/84887514/208498464-3515f73d-26d5-4b5e-9934-d40945c79d25.png" alt="drawing" width="600"/> 
 <div><b>Performing operations on array<b></div>
-  
-<img src="https://user-images.githubusercontent.com/84887514/205463462-e83f6609-6bf0-498d-9892-c1593910b31b.png" alt="drawing" width="600"/>
+<img src="https://user-images.githubusercontent.com/84887514/208498772-656aee00-62e3-42db-8a58-9a5040b2cc21.png" alt="drawing" width="600"/>
 
 
 
