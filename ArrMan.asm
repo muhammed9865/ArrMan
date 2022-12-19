@@ -46,6 +46,7 @@ modMessage db 0D ,'the array most ocurring number is:- $'
 n_line db 0AH,0DH,"$" ; For new line
 enterPressCount db 00h
 num10 dw 000Ah
+seperator db ' - $'
 
 .code
 
@@ -180,10 +181,12 @@ arrSum proc near
 
 
 arrSort proc near
-    ;This sorting implements Bubble sort
+    ;This sorting implements Bubble sort   
+    
     push si ; used as outer loop iterator
     push di ; used as inner loop iterator
     push ax ; used for temp comparing
+    push bx
     
     mov si, 0
     
@@ -195,6 +198,7 @@ arrSort proc near
         
         mov di, 0
         sortInner:
+        ; ax will contain the value where the loop should terminate at, which is (length * 2) - 2, * 2 because array elements are words, subtracting 2 because it should terminate at last element
         mov ax, length
         add ax, length
         sub ax, 2
@@ -224,13 +228,53 @@ arrSort proc near
     
     
     sortExit:
+    pop bx
     pop ax
     pop di
     pop si
+    
+    call arrPrint
+    
     ret
     
     
     arrSort endp
+
+
+arrPrint proc near
+    call newline
+    
+    push si
+    push bx
+    
+    mov si, 0
+    
+    printStart:
+        mov ax, length
+        add ax, length
+    
+        
+        cmp si, ax
+        je exitPrint
+    
+        mov bx, [arr + si]
+        call printNum
+    
+        add si, 2
+    
+        mov dx, offset seperator
+        mov ah, 09h
+        int 21h
+    
+        jmp printStart
+    
+    
+    exitPrint:
+        pop bx
+        pop si
+        ret
+    
+    endp arrPrint
 
 
 printSum proc near
@@ -532,6 +576,8 @@ printNum proc near
          push dx
          push cx
          push ax
+         push si
+         
          mov ax, bx
          mov bx, 000Ah          ;putting 10 in the bx to act as a divisor    
          mov cx, 0000h          ;putting cx to 0 to count the number of digits inside the number fot looping later    
@@ -557,6 +603,7 @@ printNum proc near
          mov ah, 09h                ;putting 09h in ah to call the interrupt for the print
          int 21h                    ;calling the interrupt. 
          
+         pop si
          pop ax
          pop cx
          pop dx
