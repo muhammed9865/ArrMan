@@ -8,6 +8,9 @@ sumchar db 's'
 avgchar db 'a'
 maxminchar db 'm'
 modchar db 'f'
+sortchar db 'o'
+printchar db 'p'
+
 exitchar db 0Dh
 
 ; Array counter to keep track of array length
@@ -32,7 +35,7 @@ arr dw 50 dup(?)
 ; Messages to be printed
 enterArrayMsg db  'Enter elements, to finish an element, press enter', 0Ah, 0Dh, 'To exit entering elements, press Enter twice$' 
 ChooseMsg db 'Press the character corresponding to the desired operation $'
-optionsMsg db 'a- Average             s- Sum', 0AH, 0DH, 'm- Maximum / Minimum   f- Most occurring number', 0AH,0DH,'Press enter to exit...$.'
+optionsMsg db 'a- Average             s- Sum', 0AH, 0DH, 'm- Maximum / Minimum   f- Most occurring number', 0Ah, 0DH, 'o- Order the array     p- Print the array', 0AH,0DH,'Press enter to exit...$'
 exitMsg db 'See you later ', 0xF0, '$'
 
 maxmessage db 0Dh ,'the maximum number is:-  $' 
@@ -89,6 +92,12 @@ main proc far
 
     cmp al, modchar
     jz gettingMode
+    
+    cmp al, sortchar
+    jz sortArray
+    
+    cmp al, printchar
+    jz printArray
 
     cmp al, exitchar
     jz finishExec
@@ -96,15 +105,26 @@ main proc far
     gettingAvg:
         call arrSort
         jmp optionsSelection
+        
     gettingSum:
         call arrSum
         call printSum
         jmp optionsSelection
+        
     gettingminmax:
         call gettingMaxMin
         jmp optionsSelection
+        
     gettingMode:
         call mode
+        jmp optionsSelection
+    
+    sortArray:
+        call arrSort
+        jmp optionsSelection
+    
+    printArray:
+        call arrPrint
         jmp optionsSelection
         
     finishExec:
