@@ -92,7 +92,7 @@ main proc far
     jz finishExec
     
     gettingAvg:
-        call arrAvg
+        call arrSort
         jmp optionsSelection
     gettingSum:
         call arrSum
@@ -127,11 +127,11 @@ getArray proc near
     cmp enterPressCount, 02h ;if count = 2, exit getArray
     jz exitArray
     
-    ; MISSING IMPLEMENTATION
+    
     call calculateVal
     mov [arr + di], dx
     call incArrCounter  
-    ; 2-storeNum procedure
+ 
     
     jmp get
     
@@ -178,6 +178,60 @@ arrSum proc near
     arrSum endp
 
 
+arrSort proc near
+    ;This sorting implements Bubble sort
+    push si ; used as outer loop iterator
+    push di ; used as inner loop iterator
+    push ax ; used for temp comparing
+    
+    mov si, 0
+    
+    sortOuter:
+    
+    cmp si, length
+    je sortExit
+    inc si  
+        
+        mov di, 0
+        sortInner:
+        mov ax, length
+        add ax, length
+        sub ax, 2
+        
+        cmp di, ax ; check if di is out of array bounds 
+        je sortOuter
+        
+        ; compare
+        mov ax, [arr + di]
+        cmp ax, [arr + di + 2]
+        ja sortSwap
+        
+        
+        afterSwap:
+        add di, 2
+        jmp sortInner ; loop
+        
+        
+        
+                
+        
+    sortSwap:
+    mov bx, [arr + di + 2]
+    mov [arr + di + 2], ax
+    mov [arr + di], bx
+    jmp afterSwap 
+    
+    
+    sortExit:
+    pop ax
+    pop di
+    pop si
+    ret
+    
+    
+    arrSort endp
+
+
 printSum proc near
     ;Print result
     push ax
@@ -191,7 +245,9 @@ printSum proc near
     call newline
     pop dx
     pop ax
-    ret
+    ret 
+    
+    printSum endp
     
 
 arrAvg proc near
