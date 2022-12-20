@@ -1,3 +1,4 @@
+# EC Team
 # ArrMan - Assembly course project - 3rd year of CS
 
 This project aims to manipulate positive integer array using Assembly language.<br>
