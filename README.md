@@ -22,10 +22,12 @@ The name is inspired from the purpose (Arr -> array, Man -> Manipulation)
 Clone the project, then run the ArrMan.asm using any 8086 assembler, [Emu8086 Assembler](https://emu8086-microprocessor-emulator.softonic-ar.com/download) is preferred since ArrMan is built using it.
 
 ## Gallery
-<div><b>Taking input array elements<b></div>
+<div><b>Mind map to descripe the flow of the program.<b></div>
+<img src="shorturl.at/zNZ68" alt="mindmap" width="600"/>
   
-
+<div><b>Taking input array elements<b></div>
 <img src="https://user-images.githubusercontent.com/84887514/208498464-3515f73d-26d5-4b5e-9934-d40945c79d25.png" alt="drawing" width="600"/> 
+  
 <div><b>Performing operations on array<b></div>
 <img src="https://user-images.githubusercontent.com/84887514/208498772-656aee00-62e3-42db-8a58-9a5040b2cc21.png" alt="drawing" width="600"/>
 
