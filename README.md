@@ -23,7 +23,7 @@ Clone the project, then run the ArrMan.asm using any 8086 assembler, [Emu8086 As
 
 ## Gallery
 <div><b>Mind map to descripe the flow of the program.<b></div>
-<img src="shorturl.at/zNZ68" alt="mindmap" width="600"/>
+![MINDMAP](/home/maro/Downloads/Start_the_program_.png)
   
 <div><b>Taking input array elements<b></div>
 <img src="https://user-images.githubusercontent.com/84887514/208498464-3515f73d-26d5-4b5e-9934-d40945c79d25.png" alt="drawing" width="600"/> 
