@@ -24,11 +24,11 @@ Clone the project, then run the ArrMan.asm using any 8086 assembler, [Emu8086 As
 ## Gallery
 <div><b>Mindmap to descripe the flow of the program.<b></div>
 <img src="https://user-images.githubusercontent.com/112482406/208610615-1eacd952-971f-48d4-8762-ac8a858c5510.png" alt="mindmap" width="600"/>
+
 <div><b>Taking input array elements<b></div>
-<img src="https://user-images.githubusercontent.com/84887514/208498464-3515f73d-26d5-4b5e-9934-d40945c79d25.png" alt="drawing" width="600"/> 
-  
+<img src="https://user-images.githubusercontent.com/84887514/208639607-076ed6e7-eb71-40ce-a89d-fabcf3dda597.png" alt="drawing" width="600"/> 
 <div><b>Performing operations on array<b></div>
-<img src="https://user-images.githubusercontent.com/84887514/208498772-656aee00-62e3-42db-8a58-9a5040b2cc21.png" alt="drawing" width="600"/>
+<img src="https://user-images.githubusercontent.com/84887514/208639845-37c9bf66-25e4-48f2-b722-42781c0dc80d.png" alt="drawing" width="600"/>
 
 
 
