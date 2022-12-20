@@ -14,6 +14,10 @@ The name is inspired from the purpose (Arr -> array, Man -> Manipulation)
 - Sort the array (Bubble sort)
 - Print the array
 
+#### Operations to be implemented
+- Insert items at index
+- Remove item at index
+
 
 ## Notes on ArrMan
 - ArrMan array is word defined elements, which maximum value of entered element is 65536 (best case)
