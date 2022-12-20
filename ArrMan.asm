@@ -1,4 +1,3 @@
-;include 'emu8086.inc'
 .MODEL SMALL
 .stack 100h
 .data
@@ -72,6 +71,7 @@ main proc far
     
     optionsSelection:
     call newline
+    call newline
     mov dx, offset optionsMsg
     mov ah, 09h
     int 21h   
@@ -80,32 +80,34 @@ main proc far
     int 21h
             
     cmp al, avgchar
-    jz gettingAvg
+        jz gettingAvg
     
     cmp al, sumchar
-    jz gettingSum
+        jz gettingSum
     
     cmp al, maxminchar 
-    jz gettingminmax
+        jz gettingminmax
 
     cmp al, modchar
-    jz gettingMode
+        jz gettingMode
     
     cmp al, sortchar
-    jz sortArray
+        jz sortArray
     
     cmp al, printchar
-    jz printArray
+        jz printArray
 
     cmp al, exitchar
-    jz finishExec
+        jz finishExec
     
     gettingAvg:
+        call newline
         call arrAvg
         jmp optionsSelection
         
     gettingSum:
         call arrSum
+        call newline
         call printSum
         jmp optionsSelection
         
@@ -351,15 +353,25 @@ incArrCounter proc near
 ; Steps
 ; 1- Get a char
 ; 2- Check if char is 0D (Enter key ascii code)
-; 3- if yes, add si * 2 to SP so it doesn't get the char as return address
+; 3- if yes, add si * 2 to SP so it doesn't get the char as return addres, then return
 ; 4- else, Push the char on stack
 ; 5- increment SI (num counter used for measuring num digits)
 ; 6- repeat 1-5
 getNum proc near
    mov si, 0
    
+   ; printing index as prefix
+   mov bx, length
+   call printNum
+   mov dl, ')'
+   mov ah, 02h
+   int 21h
+   mov dl, ' '
+   int 21h
+   
+   
    start:
-   mov ah, 07h
+   mov ah, 07h ; getting char input
    int 21h
    cmp al, 0Dh ;checking if al = enter
    je exitGetNum ; if yes exit
